@@ -64,11 +64,11 @@
       .recipe-section ol li+li { border-top:1px dashed var(--line); }
       .recipe-section ol li::before { content:counter(step); position:absolute; left:0; top:7px; width:24px; height:24px; display:grid; place-items:center; border:1.5px solid var(--ink); border-radius:50%; background:var(--butter); color:var(--text); font-size:12px; font-weight:800; font-variant-numeric:tabular-nums; }
       .card-body p { margin:10px 0 0; line-height:1.7; font-size:15px; }
-      .bottom-nav { position:fixed; z-index:10; left:50%; bottom:0; transform:translateX(-50%); width:min(100%,560px); display:grid; grid-template-columns:repeat(3,1fr); gap:6px; padding:7px 10px calc(7px + env(safe-area-inset-bottom)); border-top:1.5px solid var(--ink); background:color-mix(in srgb,var(--surface) 92%,transparent); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); }
-      .bottom-nav button,.bottom-nav a,.bottom-nav span { display:grid; place-items:center; text-decoration:none; min-height:50px; border:1.5px solid transparent; border-radius:14px; background:transparent; color:var(--dim); font-family:var(--display); font-size:16px; transition:color .15s,background .15s; }
+      .bottom-nav { position:fixed; z-index:10; left:50%; bottom:0; transform:translateX(-50%); width:min(100%,560px); display:grid; grid-template-columns:repeat(2,1fr); gap:6px; padding:7px 10px calc(7px + env(safe-area-inset-bottom)); border-top:1.5px solid var(--ink); background:color-mix(in srgb,var(--surface) 92%,transparent); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); }
+      .bottom-nav button { min-height:50px; border:1.5px solid transparent; border-radius:14px; background:transparent; color:var(--dim); font-family:var(--display); font-size:16px; transition:color .15s,background .15s; }
       .bottom-nav .active { border-color:var(--ink); background:var(--butter); color:var(--text); box-shadow:var(--shadow); }
       button:active:not(:disabled) { transform:translate(1px,1px); }
-      @media (min-width:700px) { .content-wrap { padding-top:28px; } .bottom-nav { bottom:12px; width:min(calc(100% - 32px),420px); border:1.5px solid var(--ink); border-radius:18px; padding:6px; box-shadow:3px 3px 0 var(--ink); } }
+      @media (min-width:700px) { .content-wrap { padding-top:28px; } .bottom-nav { bottom:12px; width:min(calc(100% - 32px),300px); border:1.5px solid var(--ink); border-radius:18px; padding:6px; box-shadow:3px 3px 0 var(--ink); } }
       @media (max-width:370px) { .content-wrap { padding-left:12px; padding-right:12px; } .subnav { margin:0 -12px; padding:10px 12px; } .fact { grid-template-columns:72px minmax(0,1fr); } }
       @media (prefers-reduced-motion:reduce) { * { scroll-behavior:auto!important; transition:none!important; animation:none!important; } }
     </style>
@@ -90,7 +90,7 @@
       function esc(s) { return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
       function norm(value) { return String(value || "").replace(/\s|·|\([^)]*\)/g, "").toLowerCase(); }
 
-      var MAIN_TABS = [ { id: "cooking", label: "요리" }, { id: "drinks", label: "음료" }, { label: "복숭아", href: "peaches.html" } ];
+      var MAIN_TABS = [ { id: "cooking", label: "요리" }, { id: "drinks", label: "음료" } ];
       var state = { main: location.hash === "#drinks" ? "drinks" : "cooking", search: "" };
       var openIds = {};
 
@@ -116,7 +116,6 @@
 
       function render() {
         bottomnavEl.innerHTML = MAIN_TABS.map(function (tab) {
-          if (tab.href) return '<a href="' + tab.href + '">' + tab.label + "</a>";
           return '<button type="button" data-action="main" data-id="' + tab.id + '" class="' + (state.main === tab.id ? "active" : "") + '">' + tab.label + "</button>";
         }).join("");
 

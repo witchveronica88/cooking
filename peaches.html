@@ -32,7 +32,7 @@
       button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
       .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
       .app-shell { min-height:100vh; }
-      .content-wrap { width:min(100%,560px); margin:0 auto; padding:calc(8px + env(safe-area-inset-top)) 16px calc(96px + env(safe-area-inset-bottom)); }
+      .content-wrap { width:min(100%,560px); margin:0 auto; padding:calc(8px + env(safe-area-inset-top)) 16px calc(32px + env(safe-area-inset-bottom)); }
       .subnav { position:sticky; top:0; z-index:8; display:grid; grid-auto-flow:column; grid-auto-columns:1fr; gap:8px; margin:0 -16px; padding:10px 16px; background:color-mix(in srgb,var(--bg) 88%,transparent); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); }
       .subnav:empty { display:none; }
       .subnav button { min-height:40px; border:1.5px solid var(--line-strong); border-radius:999px; background:var(--surface); color:var(--dim); font-size:15px; font-weight:700; transition:background .15s,color .15s,transform .1s; }
@@ -82,12 +82,9 @@
       .record>p { margin:10px 0 0; line-height:1.7; font-size:15px; }
       .record-meta { display:flex; flex-wrap:wrap; gap:6px 14px; margin-top:12px; padding-top:10px; border-top:1px dashed var(--line-strong); color:var(--dim); font-size:14px; }
       .stars { color:var(--accent); letter-spacing:.08em; }
-      .bottom-nav { position:fixed; z-index:10; left:50%; bottom:0; transform:translateX(-50%); width:min(100%,560px); display:grid; grid-template-columns:repeat(3,1fr); gap:6px; padding:7px 10px calc(7px + env(safe-area-inset-bottom)); border-top:1.5px solid var(--ink); background:color-mix(in srgb,var(--surface) 92%,transparent); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); }
-      .bottom-nav button,.bottom-nav a,.bottom-nav span { display:grid; place-items:center; text-decoration:none; min-height:50px; border:1.5px solid transparent; border-radius:14px; background:transparent; color:var(--dim); font-family:var(--display); font-size:16px; transition:color .15s,background .15s; }
-      .bottom-nav .active { border-color:var(--ink); background:var(--butter); color:var(--text); box-shadow:var(--shadow); }
       .empty { padding:32px 12px; text-align:center; color:var(--dim); border:1.5px dashed var(--line-strong); border-radius:var(--radius); background:var(--surface); font-size:15px; }
       button:active:not(:disabled) { transform:translate(1px,1px); }
-      @media (min-width:700px) { .content-wrap { padding-top:28px; } .bottom-nav { bottom:12px; width:min(calc(100% - 32px),420px); border:1.5px solid var(--ink); border-radius:18px; padding:6px; box-shadow:3px 3px 0 var(--ink); } }
+      @media (min-width:700px) { .content-wrap { padding-top:28px; } }
       @media (max-width:370px) { .content-wrap { padding-left:12px; padding-right:12px; } .subnav { margin:0 -12px; padding:10px 12px; } .fact { grid-template-columns:72px minmax(0,1fr); } }
       @media (prefers-reduced-motion:reduce) { * { scroll-behavior:auto!important; transition:none!important; animation:none!important; } }
     </style>
@@ -98,7 +95,6 @@
         <nav class="subnav" id="subnav" aria-label="세부 메뉴"></nav>
         <main id="main"></main>
       </div>
-      <nav class="bottom-nav" id="bottomnav" aria-label="주요 메뉴"></nav>
     </div>
 
     <script>
@@ -121,14 +117,12 @@
       function won(value) { return value ? new Intl.NumberFormat("ko-KR").format(value) + "원" : ""; }
       function shortDate(value) { if (!value) return "날짜 없음"; var p = value.split("-"); return p[0] + ". " + Number(p[1]) + ". " + Number(p[2]); }
 
-      var MAIN_TABS = [ { label: "요리", href: "index.html#cooking" }, { label: "음료", href: "index.html#drinks" }, { label: "복숭아", current: true } ];
       var SUB_TABS = [["varieties", "품종"], ["farms", "농장"], ["tastings", "시식 기록"]];
       var state = { sub: "varieties", search: "", season: "", flesh: "" };
       var openIds = {};
 
       var mainEl = document.getElementById("main");
       var subnavEl = document.getElementById("subnav");
-      var bottomnavEl = document.getElementById("bottomnav");
 
       function searchBox(label) {
         return '<label class="search"><span class="sr-only">' + esc(label) + '</span><input data-role="search" aria-label="' + esc(label) + '" value="' + esc(state.search) + '" placeholder="' + esc(label) + '" />' +
@@ -173,10 +167,6 @@
       function render() {
         subnavEl.innerHTML = SUB_TABS.map(function (pair) {
           return '<button type="button" data-action="sub" data-id="' + pair[0] + '" class="' + (state.sub === pair[0] ? "on" : "") + '">' + pair[1] + "</button>";
-        }).join("");
-        bottomnavEl.innerHTML = MAIN_TABS.map(function (tab) {
-          if (tab.current) return '<span class="active" aria-current="page">' + tab.label + "</span>";
-          return '<a href="' + tab.href + '">' + tab.label + "</a>";
         }).join("");
 
         var q = norm(state.search);
