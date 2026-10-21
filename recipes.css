@@ -85,6 +85,7 @@ body { background-color: var(--bg); background-image: radial-gradient(var(--dot)
 .grp:nth-of-type(4n+2) { --tint: var(--butter); }
 .grp:nth-of-type(4n+3) { --tint: var(--mint); }
 .grp:nth-of-type(4n) { --tint: var(--sky); }
+.grp.tool { --tint: var(--butter); }
 .grp + .grp { margin-top: 10px; }
 .grp-label { margin: 0 0 4px; color: var(--text); font-family: var(--display); font-size: var(--fs-m); }
 .grp .steps li::before { background: var(--card); }
