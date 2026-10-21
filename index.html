@@ -4,163 +4,70 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="color-scheme" content="light dark" />
-    <link rel="icon" type="image/svg+xml" href="icon.svg">
-<link rel="apple-touch-icon" href="icon.svg">
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&display=swap" />
     <title>레시피 모음</title>
-    <style>
-      :root {
-        color-scheme: light dark;
-        --bg:#fbf5ea; --dot:#efe3cc; --surface:#fffdf9; --sunken:#f7f0e4; --text:#33241b; --dim:#7d6b5d;
-        --ink:#4a3628; --line:#e6dccb; --line-strong:#d3c5ae; --accent:#e0533f; --accent-dark:#b63c2b; --accent-soft:#fde4dc; --on-accent:#fff;
-        --pink:#fde3e3; --butter:#fdf0c4; --mint:#dcf1e6; --sky:#e1ecfa;
-        --fs-xl:24px; --fs-l:18px; --fs-m:16px; --fs-s:14px;
-        --radius:16px; --shadow:2px 2px 0 var(--ink);
-        --display:"Jua","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
-        --body:"Pretendard","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
-      }
-      @media (prefers-color-scheme: dark) {
-        :root { --bg:#1d1817; --dot:#2a2321; --surface:#272120; --sunken:#2f2826; --text:#f5e9da; --dim:#bda998; --ink:#7a5a4c; --line:#3a312e; --line-strong:#4d423d; --accent:#ff8a74; --accent-dark:#ffab99; --accent-soft:#4a2a24; --on-accent:#2a1410; --pink:#43292e; --butter:#40371f; --mint:#213a30; --sky:#232f40; }
-      }
-      * { box-sizing:border-box; }
-      html { background:var(--bg); scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
-      body { margin:0; min-width:320px; color:var(--text); font-family:var(--body); background-color:var(--bg); background-image:radial-gradient(var(--dot) 1.2px,transparent 1.2px); background-size:22px 22px; overscroll-behavior:none; -webkit-font-smoothing:antialiased; }
-      button,input,textarea,select { font:inherit; color:inherit; }
-      button { cursor:pointer; -webkit-tap-highlight-color:transparent; }
-      button:disabled { cursor:default; opacity:.45; }
-      button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
-      .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
-      .app-shell { min-height:100vh; }
-      .content-wrap { width:min(100%,560px); margin:0 auto; padding:calc(8px + env(safe-area-inset-top)) 16px calc(96px + env(safe-area-inset-bottom)); }
-      .headline { margin:14px 2px 18px; }
-      .headline h1 { display:inline; margin:0; font-family:var(--display); font-size:var(--fs-xl); line-height:1.3; font-weight:400; background:linear-gradient(transparent 62%,color-mix(in srgb,var(--accent) 28%,transparent) 62%); padding:0 2px; }
-      .headline p { margin:10px 0 0; color:var(--dim); font-size:var(--fs-s); font-weight:500; }
-      .search { position:relative; display:block; margin:0 0 14px; }
-      .search input { width:100%; min-height:46px; padding:0 44px 0 18px; border:1.5px solid var(--line-strong); border-radius:999px; background:var(--surface); font-size:var(--fs-m); transition:border-color .15s; }
-      .search input::placeholder { color:var(--dim); }
-      .search input:focus { border-color:var(--ink); outline:none; }
-      .search button { position:absolute; right:8px; top:8px; width:30px; height:30px; border:0; border-radius:50%; background:var(--butter); color:var(--text); font-size:var(--fs-l); line-height:1; }
-      .list { display:grid; gap:12px; }
-      .card { border:1.5px solid var(--ink); border-radius:var(--radius); background:var(--surface); box-shadow:var(--shadow); overflow:hidden; }
-      .card>summary { list-style:none; min-height:68px; padding:15px 16px; display:flex; align-items:center; justify-content:space-between; gap:12px; background:var(--pink); cursor:pointer; }
-      .list>details:nth-child(4n+2)>summary { background:var(--butter); }
-      .list>details:nth-child(4n+3)>summary { background:var(--mint); }
-      .list>details:nth-child(4n)>summary { background:var(--sky); }
-      .card>summary::-webkit-details-marker { display:none; }
-      .card>summary>span { flex:1; min-width:0; }
-      .card>summary strong { display:block; font-family:var(--display); font-size:var(--fs-l); line-height:1.4; font-weight:400; }
-      .card>summary small { display:block; margin-top:2px; color:color-mix(in srgb,var(--text) 68%,transparent); font-size:var(--fs-s); line-height:1.45; }
-      .card>summary i { flex:0 0 28px; width:28px; height:28px; display:grid; place-items:center; border:1.5px solid var(--ink); border-radius:50%; background:var(--surface); font-style:normal; font-size:var(--fs-l); font-weight:600; line-height:1; transition:transform .2s ease; }
-      .card[open]>summary i { transform:rotate(45deg); }
-      .card[open]>summary { border-bottom:1.5px solid var(--ink); }
-      .card-body { padding:4px 16px 18px; }
-      .recipe-section { margin-top:18px; }
-      .recipe-section h3 { display:inline-block; margin:0 0 8px; padding:2px 10px; border-radius:999px; background:var(--accent-soft); color:var(--accent-dark); font-family:var(--display); font-size:var(--fs-l); font-weight:400; }
-      .recipe-section ul,.recipe-section ol { margin:0; padding:0; list-style:none; counter-reset:step; }
-      .recipe-section li { position:relative; padding:5px 0 5px 20px; line-height:1.65; font-size:var(--fs-m); }
-      .recipe-section ul li::before { content:"•"; position:absolute; left:5px; color:var(--accent); font-weight:900; }
-      .recipe-section ol li { counter-increment:step; padding-left:34px; }
-      .recipe-section ol li+li { border-top:1px dashed var(--line); }
-      .recipe-section ol li::before { content:counter(step); position:absolute; left:0; top:7px; width:24px; height:24px; display:grid; place-items:center; border:1.5px solid var(--ink); border-radius:50%; background:var(--butter); color:var(--text); font-size:var(--fs-s); font-weight:800; font-variant-numeric:tabular-nums; }
-      .card-body p { margin:10px 0 0; line-height:1.7; font-size:var(--fs-m); }
-      .bottom-nav { position:fixed; z-index:10; left:50%; bottom:0; transform:translateX(-50%); width:min(100%,560px); display:grid; grid-template-columns:repeat(2,1fr); gap:6px; padding:7px 10px calc(7px + env(safe-area-inset-bottom)); border-top:1.5px solid var(--ink); background:color-mix(in srgb,var(--surface) 92%,transparent); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); }
-      .bottom-nav button { min-height:50px; border:1.5px solid transparent; border-radius:14px; background:transparent; color:var(--dim); font-family:var(--display); font-size:var(--fs-s); transition:color .15s,background .15s; }
-      .bottom-nav .active { border-color:var(--ink); background:var(--butter); color:var(--text); box-shadow:var(--shadow); }
-      button:active:not(:disabled) { transform:translate(1px,1px); }
-      @media (min-width:700px) { .content-wrap { padding-top:28px; } .bottom-nav { bottom:12px; width:min(calc(100% - 32px),300px); border:1.5px solid var(--ink); border-radius:18px; padding:6px; box-shadow:3px 3px 0 var(--ink); } }
-      @media (max-width:370px) { .content-wrap { padding-left:12px; padding-right:12px; } .subnav { margin:0 -12px; padding:10px 12px; } .fact { grid-template-columns:72px minmax(0,1fr); } }
-      @media (prefers-reduced-motion:reduce) { * { scroll-behavior:auto!important; transition:none!important; animation:none!important; } }
-    </style>
+    <link rel="icon" type="image/svg+xml" href="icon.svg" />
+    <link rel="apple-touch-icon" href="icon.svg" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+    <link rel="stylesheet" href="app.css?v=1" />
   </head>
   <body>
-    <div class="app-shell">
-      <div class="content-wrap">
-        <main id="main"></main>
-      </div>
-      <nav class="bottom-nav" id="bottomnav" aria-label="주요 메뉴"></nav>
-    </div>
+    <header class="brand"><h1><svg class="icon brand-icon" viewBox="0 0 24 24" aria-hidden="true"><path class="f" d="M7 15c-2.6-.5-3.8-2.6-3.2-4.6.6-2 2.8-3 4.6-2.2C9 5.9 10.4 4.5 12 4.5s3 1.4 3.6 3.7c1.8-.8 4 .2 4.6 2.2.6 2-.6 4.1-3.2 4.6V20H7z"/><path d="M7 16.5h10"/></svg>레시피 모음</h1></header>
+    <main class="wrap" id="app"><p class="empty">불러오는 중…</p></main>
+    <nav class="tab-bar" id="tabbar" aria-label="메인 메뉴"></nav>
 
+    <script src="recipes-data.js?v=1"></script>
+    <script src="app.js?v=1"></script>
     <script>
-      "use strict";
-      var SEED = {"recipes":[{"category":"drinks","id":"kombucha-guide","notes":[],"sections":[{"heading":"계량","items":["찻잎 20g · 녹차·홍차·다즐링","우릴 물 800ml · 티팟 1개","백설탕 300g","찬 정수물 2.2L · 염소 없는 물","스타터와 스코비 합해서 800ml · 위쪽의 맑은 스타터 액체","총량 약 3.8리터 · 차액 3.0리터 + 스타터·스코비 800ml"]},{"heading":"우림 기준","items":["우림 온도와 시간은 차 종류와 찻잎 상태에 맞게 조절한다.","참고값은 녹차 85°C, 홍차·다즐링 95°C에서 약 10분이다."]},{"heading":"만드는 순서","items":["티팟 1개에 찻잎 20g과 물 800ml를 넣어 차 종류에 맞게 우린 뒤 찻잎을 건진다.","뜨거운 차에 백설탕 300g을 넣고 완전히 녹인다.","찬 정수물 2.2L를 섞고 30°C 아래로 식힌다. 뜨거울 때 스타터를 넣으면 균이 죽는다.","손을 씻고 지난 배치 위쪽의 맑은 스타터 액체와 스코비를 합해서 800ml 넣는다.","입구를 천이나 종이로 덮고 고무줄로 묶는다. 23~25°C, 햇빛이 들지 않는 곳에 두고 흔들지 않는다.","5일째부터 맛본다. 원하는 신맛이 나면 수확한다. 보통 7~10일 걸린다.","다음 배치용 스타터를 위쪽에서 먼저 덜어 둔다.","나머지는 고운 거름망으로 걸러 병에 담고 바로 냉장한다. 냉장 온도는 4°C 이하로 유지한다."],"ordered":true},{"heading":"안전 확인","items":["곰팡이: 솜털 같은 파란색·회색·초록색·갈색·검은색이 보이면 전부 버리고 용기를 씻는다. 갈색 실 같은 효모는 정상이다.","pH 시험지: 섞은 직후 4.6 이하, 7일째 4.2 이하인지 확인한다. 7일째 4.2를 넘으면 전부 버린다. 완성 범위는 2.5~4.2다.","용기는 유리를 쓰고, 물은 염소 없는 정수물을 쓴다."]},{"heading":"맛 조절","items":["더 연하게: 찻잎 16g을 쓰거나 우림 시간을 5~7분으로 줄인다.","더 진하게: 찻잎 24g을 쓴다.","더 달고 덜 시게: 22~23°C에 두고 6~7일에 수확한다.","효모 냄새 줄이기: 위쪽의 맑은 스타터를 쓰고 소분할 때 거른다."]}],"sortOrder":0,"subtitle":"티팟 1개 · 찻잎 20g · 설탕 300g","title":"콤부차 4L 기본 레시피"},{"category":"cooking","id":"olive-recipe","notes":["물기를 뺀 올리브 1.45kg 기준.","시목당 인쇄물과 손글씨 메모를 함께 반영."],"sections":[{"heading":"재료","items":["블랙올리브 1.45kg — 3kg 캔의 물을 버리고 한 번 헹군 양","설탕 380g — 원문 범위 350~400g","찬물 약 2L — 올리브가 잠길 정도","소금 2g — 입맛에 맞게 조절","올리고당 1큰술 — 물이 절반 남았을 때","무염 생피스타치오 — 올리브 한 알에 한 개씩"]},{"heading":"만드는 법","items":["올리브를 찬물에 한 번 헹군다. 찬물 약 2L와 함께 냄비에 넣고 뚜껑을 닫아 약불에서 20분 삶는다.","설탕과 소금을 넣고 뚜껑을 연 채 끓인다. 끓어오르면 중불로 낮춘다.","약 2시간 졸인다. 흰 거품을 걷고, 물이 절반쯤 남으면 올리고당을 넣어 가끔 아래위를 뒤집는다.","시럽이 약 3컵 남고 껍질이 살짝 쪼글거리며 윤기가 날 때 체에 건진다.","70°C에서 2시간 반건조한 뒤 큰 구멍으로 피스타치오의 뾰족한 쪽을 밀어 넣는다.","70°C에서 1시간 더 건조한다. 표면이 찐득하면 소주를 골고루 분무하고 10분 더 말린다."],"ordered":true},{"heading":"보관 · 손질","items":["밀폐 냉동 보관. 꺼낸 뒤 70°C에서 10분 돌려 표면 수분을 제거하고 포장한다.","너무 끈적하게 졸였으면 체에 담고 위에서 끓는 물을 부어 표면 시럽을 가볍게 씻는다.","피스타치오에 소주를 가볍게 분무하면 넣기 쉽다."]}],"sortOrder":1,"subtitle":"삶기 · 졸이기 · 반건조 · 피스타치오 성형","title":"올리브 정과"},{"category":"cooking","id":"couscous-recipe","notes":["치킨스톡에 간이 있으므로 소금은 조금만. 필요하면 드레싱 2~3큰술을 더한다."],"sections":[{"heading":"재료","items":["쿠스쿠스 200g, 치킨스톡 1큰술, 뜨거운 물, 올리브유","오이 1/2개, 방울토마토 10개, 파프리카 2/3개, 중간 양파 2/3개, 삶은 달걀 5개","딜, 아보카도, 새우, 베이컨은 취향에 따라 추가","소금, 레몬 또는 화이트 발사믹, 파마산 치즈. 시판 샐러드 드레싱은 선택"]},{"heading":"만드는 법","items":["쿠스쿠스에 치킨스톡을 녹인 뜨거운 물을 잠길 만큼 붓고 올리브유 1~2큰술을 넣는다.","덜 불어난 곳에는 뜨거운 물을 보충하고 15분 이상 두어 충분히 불리며 식힌다.","채소를 먹기 좋게 썰고 달걀은 으깬다.","완전히 식은 쿠스쿠스에 재료를 넣고 소금, 올리브유, 레몬 또는 화이트 발사믹, 치즈를 섞는다."],"ordered":true}],"sortOrder":2,"subtitle":"뜨거운 물에 불려 채소와 달걀을 섞는 간편식","title":"쿠스쿠스 샐러드"},{"category":"cooking","id":"cold-udon-recipe","notes":[],"sections":[{"heading":"재료","items":["소스: 간장 2큰술, 굴소스 1큰술, 식초 2큰술, 설탕 2큰술, 마늘 1.5큰술, 레몬즙 1큰술, 와사비 2작은술, 통깨 2큰술, 포도씨유 4큰술, 참기름 2큰술","채소: 양상추, 베이비채소, 파프리카, 토마토","면 · 해산물: 우동면, 새우, 오징어"]},{"heading":"준비와 완성","items":["소스 재료를 모두 믹서기에 넣어 곱게 갈고 냉장고에서 3시간 이상 숙성한다.","양상추, 베이비채소, 파프리카, 토마토는 물기 없이 준비한다.","새우와 오징어는 데쳐 차게 식힌다.","우동면을 삶아 찬물에 헹군 뒤 소스 약 2큰술을 넣어 미리 비빈다.","모든 재료를 담고 소스는 따로 내어 먹기 직전에 섞는다."],"ordered":true}],"sortOrder":3,"subtitle":"숙성 소스를 곁들이는 차가운 우동","title":"냉우동 샐러드"},{"category":"cooking","id":"namul-recipe","notes":["숙주를 넣으면 수분 때문에 싱거워질 수 있어 소금을 조금 더한다."],"sections":[{"heading":"재료","items":["묵나물 볶음: 불린 묵나물, 숙주(선택), 생들기름, 고춧가루 1 : 마늘 1 : 간장 2, 파, 물, 토판염 또는 태안자염","두부나물전: 두부, 잘게 다진 묵나물, 소금, 들기름"]},{"heading":"만드는 법 · 묵나물 볶음","items":["잘 불린 나물의 물기를 짜 팬에 담고 생들기름을 먼저 넣어 고루 묻힌다.","고춧가루 1 : 마늘 1 : 간장 2 비율로 양념해 볶는다.","물을 넣기 전에 파를 넣고 맛있는 냄새가 날 때까지 볶아 풋내를 날린다.","물을 자작하게 붓고 뚜껑을 닫아 찌듯 볶는다. 마지막에 소금으로 간한다."],"ordered":true},{"heading":"만드는 법 · 두부나물전","items":["두부를 약불에서 천천히 데쳐 수분을 충분히 제거한다.","두부를 으깨고 잘게 다진 묵나물, 소금, 들기름을 섞는다.","먹기 좋은 크기로 빚어 앞뒤로 노릇하게 부친다."],"ordered":true}],"sortOrder":4,"subtitle":"고사리·취나물·곤드레·눈개승마·가지에 쓰는 기본법","title":"묵나물 볶음 · 두부나물전"},{"category":"cooking","id":"namul-guide","notes":[],"sections":[{"heading":"재료","items":["말린 묵나물"]},{"heading":"묵나물 만들기","items":["잘 따기: 좋은 환경에서 알맞은 시기에 적절한 크기로 딴다.","잘 데치기: 줄기까지 충분히 익힌다. 아삭함이 남으면 안에서 변해 빨리 쉴 수 있다.","잘 말리기: 데친 나물은 찬물에 헹구지 않고 바람이 잘 통하고 직사광선이 없는 곳에서 말린다.","잘 불리기: 천천히 말린 나물은 오래, 빨리 말린 나물은 짧게 불린다.","찌듯 볶기: 부족한 짠맛·감칠맛·기름을 더하고 뚜껑을 닫아 양념이 속까지 배게 한다."],"ordered":true},{"heading":"맛을 좌우하는 점","items":["줄기는 맛, 잎은 향을 담당한다. 딱딱하게 목질화된 부분은 ‘귀’라고도 부른다.","빨리 말리면 나물 맛이 또렷하고, 천천히 말리면 묵은 맛이 깊어진다.","강원도·울릉도·지리산 나물에 관한 산지 메모와 들깨·참깨 재배 환경 기록이 원문에 함께 있다."]}],"sortOrder":5,"subtitle":"따기 · 데치기 · 말리기 · 불리기","title":"묵나물 가이드"},{"category":"cooking","id":"pudding-recipe","notes":["덜 달게 만들 때는 푸딩 반죽의 설탕을 30g까지 줄인다."],"sections":[{"heading":"재료","items":["푸딩: 달걀노른자 2개, 달걀 1개, 우유 200ml, 생크림 100ml, 설탕 40g, 바닐라 익스트랙 1/2작은술, 소금 약간","캐러멜: 설탕 40g, 물 20g, 뜨거운 물 15g"]},{"heading":"캐러멜","items":["설탕과 물 20g을 중불에서 젓지 않고 끓인다.","갈색빛이 돌면 약불로 줄인다. 원하는 색이 되면 불을 끄고 뜨거운 물 15g을 조심스럽게 섞어 용기에 나눈다."],"ordered":true},{"heading":"푸딩","items":["우유와 생크림을 가장자리가 끓기 시작할 때까지만 약불로 데운다.","달걀노른자, 달걀, 설탕, 바닐라, 소금을 거품 나지 않게 풀고 데운 우유를 조금씩 섞는다.","고운 체에 두 번 거른 뒤 캐러멜을 담은 용기에 붓는다.","냄비 바닥에 면포나 키친타월을 깔고 용기를 놓는다. 용기 높이의 1/2~2/3까지 뜨거운 물을 붓는다.","뚜껑을 덮고 아주 약한 불에서 30~50분 익힌다. 가운데가 살짝 흔들릴 때 꺼낸다.","식힌 뒤 냉장고에서 최소 4시간 굳힌다."],"ordered":true}],"sortOrder":6,"subtitle":"냄비 중탕으로 익히는 캐러멜 푸딩","title":"일본식 푸딩"},{"category":"cooking","id":"dalgona-recipe","notes":["청소용 베이킹소다가 아닌 식용 식소다를 사용한다. 완성 즉시 나무젓가락으로 찍어 먹거나, 국자에 따뜻한 물을 부어 남은 것을 녹여 마신다."],"sections":[{"heading":"재료","items":["화미 포도당 가루, 식용 식소다","도구: 국자, 나무젓가락, 가스레인지"]},{"heading":"만드는 법","items":["국자에 포도당을 듬뿍 넣고 약불에서 젓지 않은 채 녹인다. 테두리가 살짝 끓을 정도로 불에서 들었다 놓는다.","가운데에 공간을 만들고 녹은 포도당이 채워질 때까지 기다린다. 하얀 액체가 생기면 중심부터 바깥쪽으로 살살 섞는다.","덩어리를 깨며 완전히 녹인다. 적극적으로 휘젓지는 않는다.","하얀 액체가 되면 식용 식소다를 나무젓가락 끝에 찍힐 만큼만 넣는다.","불 가까이에서 빠르게 저어 부풀린다. 하얀색에서 멈추려면 바로 불에서 빼고, 갈색을 원하면 조금 더 가열한다."],"ordered":true}],"sortOrder":7,"subtitle":"포도당과 식용 식소다로 만드는 옛날 방식","title":"오리지널 하얀 달고나"},{"category":"cooking","id":"jjonku-recipe","notes":["마시멜로 반죽은 체온보다 조금 높은 정도가 다루기 좋다. 실온에서는 쫀득하고 냉장하면 조금 단단해진다. 원문은 냉동 보관을 권하지 않는다."],"sections":[{"heading":"재료","items":["필링: 춘권피 100g, 무염 버터 20g, 아몬드 스프레드 100g, 곱게 간 호박씨 50g, 화이트초콜릿(원문 분량 없음), 피스타치오 향 오일","겉면: 마시멜로 200g, 무염 버터 30g, 무가당 코코아가루 20g, 탈지분유 15g, 마감용 코코아가루"]},{"heading":"필링","items":["춘권피에 버터를 얇게 바르고 여러 장을 겹쳐 최대한 가늘게 채 썬다.","마른 팬의 약불에서 황금빛이 날 때까지 볶고 쟁반에 펼쳐 완전히 식힌다.","아몬드 스프레드, 호박씨, 피스타치오 향 오일, 화이트초콜릿을 섞어 25~30g씩 빚고 40분 이상 냉동한다."],"ordered":true},{"heading":"겉면과 마무리","items":["버터를 녹인 팬에 마시멜로를 넣고 약불에서 완전히 녹인다.","불을 끄고 체 친 코코아가루와 탈지분유를 넣어 빠르게 한 덩어리로 만든다.","손으로 만질 수 있을 만큼 식히고 넓게 펴서 차가운 필링을 빈틈없이 감싼다.","코코아가루에 굴려 달라붙지 않게 마무리한다."],"ordered":true}],"sortOrder":8,"subtitle":"춘권피 필링을 마시멜로 초코 피로 감싼 쿠키","title":"짭쫀쿠"},{"category":"drinks","id":"hojicha-recipe","notes":[],"sections":[{"heading":"재료","items":["4인분: 호지차 8g, 물 400ml, 머스코바도 32g, 백설탕 56g, 소금 0.4g(두 꼬집), 카다멈 1/2개","대용량: 호지차 60g, 물 3,200ml, 머스코바도 250g, 백설탕 450g, 소금 3.2g, 카다멈 4개"]},{"heading":"만드는 법","items":["카다멈을 2~3등분하고 모든 재료를 한 번에 넣어 가열한다.","4인분은 약 280ml, 대용량은 약 2,240ml가 될 때까지 약불로 졸인다. 대용량은 인덕션 2~3단에서 약 30분.","불을 끄고 완전히 식을 때까지 그대로 두어 우린다.","고운 체에 걸러 베이스만 병에 담아 냉장 보관한다."],"ordered":true},{"heading":"한 잔","items":["아이스: 베이스 60ml + 우유 120ml.","핫: 베이스 55ml + 데운 우유 140ml."]}],"sortOrder":9,"subtitle":"70%까지 졸여 만드는 냉장 베이스","title":"호지차 밀크티"},{"category":"drinks","id":"chai-recipe","notes":["원본 노트에는 재료 배합만 있고 물·우유의 양과 만드는 순서는 따로 적혀 있지 않다."],"sections":[{"heading":"재료","items":["아쌈 CTC 30g","시나몬 5g, 정향 1.6g, 팔각 1.2g(2개)","카다멈 24개 2.7g — 껍질을 까는 편이 좋음","말린 생강 3개 1.5g, 육두구 1알 1.9g, 흑후추 6알","호수 소금 1.2g, 꿀"]}],"sortOrder":10,"subtitle":"아쌈 CTC와 향신료 배합 기록","title":"스티키 마살라 짜이"}]};
+      (function () {
+        "use strict";
+        var A = window.App;
+        var D = window.RECIPES_DATA;
+        if (!A || !D) {
+          document.getElementById("app").innerHTML = '<p class="empty">화면을 불러오지 못했습니다. 새로고침해 주세요.</p>';
+          return;
+        }
 
-      var data = SEED;
+        function summary(r) {
+          var ing = 0, steps = 0;
+          r.sections.forEach(function (s) {
+            if (s.ordered) steps += s.items.length;
+            else if (/재료|계량/.test(s.heading)) ing += s.items.length;
+          });
+          var parts = [];
+          if (ing) parts.push("재료 " + ing);
+          if (steps) parts.push("단계 " + steps);
+          return parts.join(" · ") || "구간 " + r.sections.length;
+        }
+        function list(items, ordered) {
+          var lis = items.map(function (i) { return "<li>" + A.esc(i) + "</li>"; }).join("");
+          return ordered ? '<ol class="steps">' + lis + "</ol>" : '<ul class="items">' + lis + "</ul>";
+        }
+        function recipeRow(r) {
+          var rows = r.sections.map(function (s, i) {
+            return A.fold({ inner: true, id: "r-" + r.id + "-s" + i, name: s.heading, date: s.items.length + (s.ordered ? "단계" : "개"), body: A.guide(list(s.items, s.ordered)) });
+          });
+          if (r.notes.length) rows.push(A.fold({ inner: true, id: "r-" + r.id + "-notes", name: "메모", date: r.notes.length + "개", body: A.guide(list(r.notes, false)) }));
+          return A.fold({ id: "r-" + r.id, name: r.title, sum: summary(r), body: (r.subtitle ? '<p class="intro">' + A.esc(r.subtitle) + "</p>" : "") + A.innerList(rows) });
+        }
 
-      function esc(s) { return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
-      function norm(value) { return String(value || "").replace(/\s|·|\([^)]*\)/g, "").toLowerCase(); }
-
-      var MAIN_TABS = [ { id: "cooking", label: "요리" }, { id: "drinks", label: "음료" } ];
-      var state = { main: location.hash === "#drinks" ? "drinks" : "cooking", search: "" };
-      var openIds = {};
-
-      var mainEl = document.getElementById("main");
-      var bottomnavEl = document.getElementById("bottomnav");
-
-      function searchBox(label) {
-        return '<label class="search"><span class="sr-only">' + esc(label) + '</span><input data-role="search" aria-label="' + esc(label) + '" value="' + esc(state.search) + '" placeholder="' + esc(label) + '" />' +
-          (state.search ? '<button type="button" data-action="clear-search" aria-label="검색어 지우기">×</button>' : "") + "</label>";
-      }
-
-      function recipeCard(recipe) {
-        var open = openIds["r:" + recipe.id] ? " open" : "";
-        var sections = recipe.sections.map(function (section) {
-          var items = section.items.map(function (item) { return "<li>" + esc(item) + "</li>"; }).join("");
-          return '<section class="recipe-section"><h3>' + esc(section.heading) + "</h3>" + (section.ordered ? "<ol>" + items + "</ol>" : "<ul>" + items + "</ul>") + "</section>";
-        }).join("");
-        var notes = recipe.notes.length ? '<section class="recipe-section"><h3>메모</h3><ul>' + recipe.notes.map(function (n) { return "<li>" + esc(n) + "</li>"; }).join("") + "</ul></section>" : "";
-        return '<details class="card" data-open-key="r:' + esc(recipe.id) + '"' + open + "><summary><span><strong>" + esc(recipe.title) + "</strong><small>" + esc(recipe.subtitle) + '</small></span><i aria-hidden="true">+</i></summary><div class="card-body">' +
-          sections + notes +
-          "</div></details>";
-      }
-
-      function render() {
-        bottomnavEl.innerHTML = MAIN_TABS.map(function (tab) {
-          return '<button type="button" data-action="main" data-id="' + tab.id + '" class="' + (state.main === tab.id ? "active" : "") + '">' + tab.label + "</button>";
-        }).join("");
-
-        var q = norm(state.search);
-        var html = "";
-        var cat = state.main;
-        var recipes = data.recipes.filter(function (r) {
-          return r.category === cat && (!q || norm([r.title, r.subtitle].concat(r.sections.reduce(function (a, s) { return a.concat([s.heading], s.items); }, []), r.notes).join(" ")).includes(q));
+        var entries = [];
+        var tabs = D.categories.map(function (c) {
+          var recipes = D.recipes.filter(function (r) { return r.category === c.id; });
+          recipes.forEach(function (r) {
+            entries.push({ name: r.title, where: c.name, text: r.title + " " + r.subtitle, go: { tab: c.id, open: ["r-" + r.id] } });
+            r.sections.forEach(function (s, i) {
+              entries.push({ name: r.title, where: c.name + " · " + s.heading, text: s.heading + " " + s.items.join(" "), go: { tab: c.id, open: ["r-" + r.id, "r-" + r.id + "-s" + i] } });
+            });
+            if (r.notes.length) entries.push({ name: r.title, where: c.name + " · 메모", text: r.notes.join(" "), go: { tab: c.id, open: ["r-" + r.id, "r-" + r.id + "-notes"] } });
+          });
+          return {
+            id: c.id, label: c.name, icon: c.id,
+            html: A.card({ id: "c-" + c.id, icon: c.id, title: c.name, badge: recipes.length + "개", desc: c.description, rows: recipes.map(recipeRow), empty: "등록된 레시피가 없습니다" })
+          };
         });
-        html = '<header class="headline"><h1>' + (cat === "cooking" ? "요리 레시피" : "음료 레시피") + "</h1><p>" + recipes.length + "개 · 이름, 재료, 과정으로 찾기</p></header>" +
-          searchBox("레시피 검색") +
-          '<div class="list">' + recipes.map(function (r) { return recipeCard(r); }).join("") + "</div>";
-        mainEl.innerHTML = html;
-      }
 
-      /* ---------- 이벤트 ---------- */
-      document.addEventListener("click", function (e) {
-        var btn = e.target.closest("[data-action]");
-        if (!btn) return;
-        var action = btn.getAttribute("data-action");
-        if (action === "main") {
-          state.main = btn.getAttribute("data-id"); state.search = ""; history.replaceState(null, "", "#" + state.main); render(); window.scrollTo({ top: 0, behavior: "smooth" });
-        } else if (action === "clear-search") {
-          state.search = ""; render();
-          var input = mainEl.querySelector("[data-role='search']"); if (input) input.focus();
-        }
-      });
-
-      document.addEventListener("input", function (e) {
-        if (e.target.matches("[data-role='search']")) {
-          var pos = e.target.selectionStart;
-          state.search = e.target.value;
-          render();
-          var input = mainEl.querySelector("[data-role='search']");
-          if (input) { input.focus(); try { input.setSelectionRange(pos, pos); } catch (err) {} }
-        }
-      });
-
-      document.addEventListener("toggle", function (e) {
-        var key = e.target.getAttribute && e.target.getAttribute("data-open-key");
-        if (key) openIds[key] = e.target.open;
-      }, true);
-
-      render();
+        A.start({ key: "recipes", searchLabel: "레시피 · 재료 검색", tabs: tabs, entries: entries });
+      })();
     </script>
   </body>
 </html>
