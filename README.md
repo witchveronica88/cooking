@@ -9,11 +9,11 @@
 
 ### `recipes-data.js` (레시피)
 
-- `categories`: 아래 탭. `id`, `name`, `description`(카드 머리 설명).
+- `categories`: 아래 탭. `id`, `name`.
 - `recipes`: 레시피 하나마다
   - `id`: 영문 · 숫자 · `-`로 된 고유 이름
   - `category`: `meal`(식사) · `dessert`(디저트) · `drink`(음료)
-  - `title`, `subtitle`(펼치면 맨 위 한 줄)
+  - `title`: 카드 제목
   - `sections`: `{ "heading": "재료", "items": ["..."] }`. 순서가 있는 과정은 `"ordered": true`
   - `notes`: 메모 줄 목록(없으면 `[]`)
 

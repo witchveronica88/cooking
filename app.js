@@ -26,21 +26,22 @@
   };
   function icon(name, cls) { return '<svg class="icon' + (cls ? " " + cls : "") + '" viewBox="0 0 24 24" aria-hidden="true">' + (ICONS[name] || "") + "</svg>"; }
 
-  /* ＋ 줄. inner가 true면 한 단계 안쪽 줄 */
+  /* ＋ 줄. inner가 true면 한 단계 안쪽 줄, card가 true면 통째로 열리는 단일 카드 */
   function fold(o) {
-    return '<details class="fold ' + (o.inner ? "inner" : "row") + '" id="' + esc(o.id) + '"><summary>' +
+    var cls = o.card ? "fold row card card-fold" : o.inner ? "fold inner" : "fold row";
+    return '<details class="' + cls + '" id="' + esc(o.id) + '"><summary>' +
       '<span class="fold-text"><span class="fold-name">' + esc(o.name) + "</span>" +
       (o.sum ? '<span class="fold-sum">' + esc(o.sum) + "</span>" : "") +
       (o.info ? '<span class="fold-info">' + esc(o.info) + "</span>" : "") + "</span>" +
       (o.date ? '<span class="fold-date">' + esc(o.date) + "</span>" : "") +
+      (o.badge ? '<span class="badge">' + esc(o.badge) + "</span>" : "") +
       '<span class="pm" aria-hidden="true"></span></summary><div class="fold-body">' + o.body + "</div></details>";
   }
   function innerList(rows) { return rows.length ? '<div class="inner-list">' + rows.join("") + "</div>" : ""; }
   function guide(html) { return '<div class="guide">' + html + "</div>"; }
   function card(o) {
     return '<article class="card" id="' + esc(o.id) + '"><header class="card-head"><div class="card-title">' + (o.icon ? icon(o.icon) : "") +
-      "<h2>" + esc(o.title) + "</h2>" + (o.badge ? '<span class="badge">' + esc(o.badge) + "</span>" : "") + "</div>" +
-      (o.desc ? "<p>" + esc(o.desc) + "</p>" : "") + "</header>" +
+      "<h2>" + esc(o.title) + "</h2>" + (o.badge ? '<span class="badge">' + esc(o.badge) + "</span>" : "") + "</div></header>" +
       (o.rows.length ? o.rows.join("") : '<p class="empty">' + esc(o.empty || "내용이 없습니다") + "</p>") + "</article>";
   }
   /* 화면 안 링크. go = { tab, sub, open: [펼칠 줄 id들] } */
@@ -90,9 +91,11 @@
       var row = d.classList.contains("row") ? d : d.closest(".row");
       if (row && row.open) row.style.setProperty("--outer-h", row.firstElementChild.offsetHeight + "px");
     }
-    function offsetFor(d) {
+    /* 화면 위에 붙는 것들(서브 탭, 바깥쪽 펼친 제목) 높이 합 */
+    function offsetFor(el) {
       var top = stickPx();
-      if (d.classList.contains("inner")) { var row = d.closest(".row"); if (row) top += row.firstElementChild.offsetHeight; }
+      var d = el.parentElement && el.parentElement.closest("details[open]");
+      while (d) { top += d.firstElementChild.offsetHeight; d = d.parentElement && d.parentElement.closest("details[open]"); }
       return top;
     }
 
@@ -136,7 +139,7 @@
     }
     function clearSearch() { if (q.value) { q.value = ""; runSearch(); } }
 
-    /* 검색 · 링크로 이동: 그 탭(과 서브 탭)으로 바꾸고, 접힌 줄을 펼쳐서 그 항목으로 간다 */
+    /* 검색 · 링크로 이동: 그 탭(과 서브 탭)으로 바꾸고, 접힌 줄을 펼쳐서 그 항목(focus가 있으면 그 자리)으로 간다 */
     function goTo(go) {
       clearSearch();
       showTab(go.tab);
@@ -146,6 +149,7 @@
         var d = document.getElementById(id);
         if (d && d.tagName === "DETAILS") { d.open = true; target = d; }
       });
+      if (go.focus) target = document.getElementById(go.focus) || target;
       if (!target) return;
       requestAnimationFrame(function () {
         measure(target);

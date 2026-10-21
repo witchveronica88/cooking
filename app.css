@@ -105,7 +105,6 @@ a { color: inherit; }
 .card-title svg { flex: 0 0 auto; width: 22px; height: 22px; color: var(--accent); }
 .card-title h2 { flex: 1; min-width: 0; margin: 0; font-size: var(--fs-l); font-weight: 700; line-height: 1.4; }
 .badge { flex: 0 0 auto; padding: 2px 10px; border-radius: 999px; background: var(--badge-bg); color: var(--muted); font-size: var(--fs-s); line-height: 1.5; white-space: nowrap; }
-.card-head p { margin: 4px 0 0; color: var(--muted); font-size: var(--fs-s); }
 .card > .empty { margin: 0; padding: var(--pad); }
 .empty { color: var(--muted); font-size: var(--fs-s); text-align: center; }
 .group-title { display: flex; align-items: baseline; gap: 8px; margin: 8px 2px 12px; font-size: var(--fs-l); font-weight: 700; }
@@ -118,12 +117,13 @@ a { color: inherit; }
 .fold-name { font-weight: 700; }
 .fold-sum { margin-left: 8px; color: var(--muted); font-size: var(--fs-s); }
 .fold-info { display: block; color: var(--muted); font-size: var(--fs-s); }
+.fold > summary .badge { margin-left: 4px; }
 .fold-date { flex: 0 0 auto; color: var(--muted); font-size: var(--fs-s); white-space: nowrap; }
 .pm { position: relative; flex: 0 0 20px; width: 20px; height: 20px; color: var(--muted); }
 .pm::before, .pm::after { content: ""; position: absolute; left: 3px; top: 9px; width: 14px; height: 2px; border-radius: 2px; background: currentColor; }
 .pm::after { transform: rotate(90deg); }
 .fold[open] > summary .pm::after { display: none; }
-.row + .row { border-top: 1px solid var(--line); }
+.card > .row + .row { border-top: 1px solid var(--line); }
 
 /* 펼친 표시: ＋ → －, 제목 줄에만 옅은 배경, 카드 왼쪽 끝에 강조색 막대 */
 .row[open] { box-shadow: inset 3px 0 0 var(--accent); }
@@ -135,11 +135,19 @@ a { color: inherit; }
 .inner { border-top: 1px solid var(--line); }
 .fold-body > .inner-list:first-child > .inner:first-child { border-top: 0; }
 .guide { padding-left: 14px; border-left: 2px solid var(--guide); }
+
+/* 단일 카드: 머리를 누르면 내용 전체가 한 번에 열린다 */
+.card-fold > summary { min-height: 68px; padding: 16px var(--pad); }
+.card-fold > summary .fold-name { font-size: var(--fs-xl); line-height: 1.35; }
+.card-fold > .fold-body { padding: 16px var(--pad) 20px; }
+.sec + .sec { margin-top: 24px; }
+.sec h3 { margin: 0 0 8px; font-size: var(--fs-l); font-weight: 700; line-height: 1.4; }
+.sec.flash h3 { animation: flash-text 1.4s ease-out; }
+@keyframes flash-text { 0%, 30% { color: var(--accent); } 100% { color: var(--text); } }
 .flash > summary { animation: flash 1.4s ease-out; }
 @keyframes flash { 0%, 30% { background: var(--accent-soft); } 100% { background: var(--open-bg); } }
 
 /* 펼친 내용 */
-.intro { margin: 0; color: var(--muted); font-size: var(--fs-s); }
 .text { margin: 0; line-height: 1.7; white-space: pre-line; }
 .text + .text, .meta + .text, .text + .meta, .meta + .meta, .photo + .text { margin-top: 10px; }
 .meta { margin: 0; font-size: var(--fs-s); line-height: 1.6; }

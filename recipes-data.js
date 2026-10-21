@@ -3,18 +3,15 @@ window.RECIPES_DATA = {
   "categories": [
     {
       "id": "meal",
-      "name": "식사",
-      "description": "샐러드와 나물 반찬"
+      "name": "식사"
     },
     {
       "id": "dessert",
-      "name": "디저트",
-      "description": "정과 · 푸딩 · 과자"
+      "name": "디저트"
     },
     {
       "id": "drink",
-      "name": "음료",
-      "description": "콤부차와 차 음료"
+      "name": "음료"
     }
   ],
   "recipes": [
@@ -22,7 +19,6 @@ window.RECIPES_DATA = {
       "id": "couscous-recipe",
       "category": "meal",
       "title": "쿠스쿠스 샐러드",
-      "subtitle": "뜨거운 물에 불려 채소와 달걀을 섞는 간편식",
       "sections": [
         {
           "heading": "재료",
@@ -52,7 +48,6 @@ window.RECIPES_DATA = {
       "id": "cold-udon-recipe",
       "category": "meal",
       "title": "냉우동 샐러드",
-      "subtitle": "숙성 소스를 곁들이는 차가운 우동",
       "sections": [
         {
           "heading": "재료",
@@ -80,7 +75,6 @@ window.RECIPES_DATA = {
       "id": "namul-recipe",
       "category": "meal",
       "title": "묵나물 볶음 · 두부나물전",
-      "subtitle": "고사리·취나물·곤드레·눈개승마·가지에 쓰는 기본법",
       "sections": [
         {
           "heading": "재료",
@@ -117,7 +111,6 @@ window.RECIPES_DATA = {
       "id": "namul-guide",
       "category": "meal",
       "title": "묵나물 가이드",
-      "subtitle": "따기 · 데치기 · 말리기 · 불리기",
       "sections": [
         {
           "heading": "재료",
@@ -151,7 +144,6 @@ window.RECIPES_DATA = {
       "id": "olive-recipe",
       "category": "dessert",
       "title": "올리브 정과",
-      "subtitle": "삶기 · 졸이기 · 반건조 · 피스타치오 성형",
       "sections": [
         {
           "heading": "재료",
@@ -194,7 +186,6 @@ window.RECIPES_DATA = {
       "id": "pudding-recipe",
       "category": "dessert",
       "title": "일본식 푸딩",
-      "subtitle": "냄비 중탕으로 익히는 캐러멜 푸딩",
       "sections": [
         {
           "heading": "재료",
@@ -232,7 +223,6 @@ window.RECIPES_DATA = {
       "id": "dalgona-recipe",
       "category": "dessert",
       "title": "오리지널 하얀 달고나",
-      "subtitle": "포도당과 식용 식소다로 만드는 옛날 방식",
       "sections": [
         {
           "heading": "재료",
@@ -261,7 +251,6 @@ window.RECIPES_DATA = {
       "id": "jjonku-recipe",
       "category": "dessert",
       "title": "짭쫀쿠",
-      "subtitle": "춘권피 필링을 마시멜로 초코 피로 감싼 쿠키",
       "sections": [
         {
           "heading": "재료",
@@ -298,7 +287,6 @@ window.RECIPES_DATA = {
       "id": "kombucha-guide",
       "category": "drink",
       "title": "콤부차 4L 기본 레시피",
-      "subtitle": "티팟 1개 · 찻잎 20g · 설탕 300g",
       "sections": [
         {
           "heading": "계량",
@@ -356,7 +344,6 @@ window.RECIPES_DATA = {
       "id": "hojicha-recipe",
       "category": "drink",
       "title": "호지차 밀크티",
-      "subtitle": "70%까지 졸여 만드는 냉장 베이스",
       "sections": [
         {
           "heading": "재료",
@@ -389,7 +376,6 @@ window.RECIPES_DATA = {
       "id": "chai-recipe",
       "category": "drink",
       "title": "스티키 마살라 짜이",
-      "subtitle": "아쌈 CTC와 향신료 배합 기록",
       "sections": [
         {
           "heading": "재료",

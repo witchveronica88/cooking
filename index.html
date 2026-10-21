@@ -8,15 +8,15 @@
     <link rel="icon" type="image/svg+xml" href="icon.svg" />
     <link rel="apple-touch-icon" href="icon.svg" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
-    <link rel="stylesheet" href="app.css?v=1" />
+    <link rel="stylesheet" href="app.css?v=2" />
   </head>
   <body>
     <header class="brand"><h1><svg class="icon brand-icon" viewBox="0 0 24 24" aria-hidden="true"><path class="f" d="M7 15c-2.6-.5-3.8-2.6-3.2-4.6.6-2 2.8-3 4.6-2.2C9 5.9 10.4 4.5 12 4.5s3 1.4 3.6 3.7c1.8-.8 4 .2 4.6 2.2.6 2-.6 4.1-3.2 4.6V20H7z"/><path d="M7 16.5h10"/></svg>레시피 모음</h1></header>
     <main class="wrap" id="app"><p class="empty">불러오는 중…</p></main>
     <nav class="tab-bar" id="tabbar" aria-label="메인 메뉴"></nav>
 
-    <script src="recipes-data.js?v=1"></script>
-    <script src="app.js?v=1"></script>
+    <script src="recipes-data.js?v=2"></script>
+    <script src="app.js?v=2"></script>
     <script>
       (function () {
         "use strict";
@@ -27,42 +27,34 @@
           return;
         }
 
-        function summary(r) {
-          var ing = 0, steps = 0;
-          r.sections.forEach(function (s) {
-            if (s.ordered) steps += s.items.length;
-            else if (/재료|계량/.test(s.heading)) ing += s.items.length;
-          });
-          var parts = [];
-          if (ing) parts.push("재료 " + ing);
-          if (steps) parts.push("단계 " + steps);
-          return parts.join(" · ") || "구간 " + r.sections.length;
-        }
         function list(items, ordered) {
           var lis = items.map(function (i) { return "<li>" + A.esc(i) + "</li>"; }).join("");
           return ordered ? '<ol class="steps">' + lis + "</ol>" : '<ul class="items">' + lis + "</ul>";
         }
-        function recipeRow(r) {
-          var rows = r.sections.map(function (s, i) {
-            return A.fold({ inner: true, id: "r-" + r.id + "-s" + i, name: s.heading, date: s.items.length + (s.ordered ? "단계" : "개"), body: A.guide(list(s.items, s.ordered)) });
-          });
-          if (r.notes.length) rows.push(A.fold({ inner: true, id: "r-" + r.id + "-notes", name: "메모", date: r.notes.length + "개", body: A.guide(list(r.notes, false)) }));
-          return A.fold({ id: "r-" + r.id, name: r.title, sum: summary(r), body: (r.subtitle ? '<p class="intro">' + A.esc(r.subtitle) + "</p>" : "") + A.innerList(rows) });
+        function section(id, heading, items, ordered) {
+          return '<section class="sec" id="' + id + '"><h3>' + A.esc(heading) + "</h3>" + list(items, ordered) + "</section>";
+        }
+        /* 레시피 하나 = 카드 하나. 열면 재료 · 만드는 법 · 메모가 한 번에 다 보인다 */
+        function recipeCard(r) {
+          var body = r.sections.map(function (s, i) { return section("r-" + r.id + "-s" + i, s.heading, s.items, s.ordered); }).join("") +
+            (r.notes.length ? section("r-" + r.id + "-notes", "메모", r.notes, false) : "");
+          return A.fold({ card: true, id: "r-" + r.id, name: r.title, body: body });
         }
 
         var entries = [];
         var tabs = D.categories.map(function (c) {
           var recipes = D.recipes.filter(function (r) { return r.category === c.id; });
           recipes.forEach(function (r) {
-            entries.push({ name: r.title, where: c.name, text: r.title + " " + r.subtitle, go: { tab: c.id, open: ["r-" + r.id] } });
+            var open = ["r-" + r.id];
+            entries.push({ name: r.title, where: c.name, text: r.title, go: { tab: c.id, open: open } });
             r.sections.forEach(function (s, i) {
-              entries.push({ name: r.title, where: c.name + " · " + s.heading, text: s.heading + " " + s.items.join(" "), go: { tab: c.id, open: ["r-" + r.id, "r-" + r.id + "-s" + i] } });
+              entries.push({ name: r.title, where: c.name + " · " + s.heading, text: s.heading + " " + s.items.join(" "), go: { tab: c.id, open: open, focus: "r-" + r.id + "-s" + i } });
             });
-            if (r.notes.length) entries.push({ name: r.title, where: c.name + " · 메모", text: r.notes.join(" "), go: { tab: c.id, open: ["r-" + r.id, "r-" + r.id + "-notes"] } });
+            if (r.notes.length) entries.push({ name: r.title, where: c.name + " · 메모", text: r.notes.join(" "), go: { tab: c.id, open: open, focus: "r-" + r.id + "-notes" } });
           });
           return {
             id: c.id, label: c.name, icon: c.id,
-            html: A.card({ id: "c-" + c.id, icon: c.id, title: c.name, badge: recipes.length + "개", desc: c.description, rows: recipes.map(recipeRow), empty: "등록된 레시피가 없습니다" })
+            html: recipes.length ? recipes.map(recipeCard).join("") : '<p class="empty">등록된 레시피가 없습니다</p>'
           };
         });
 
