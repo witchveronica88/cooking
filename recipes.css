@@ -79,11 +79,15 @@ body { background-color: var(--bg); background-image: radial-gradient(var(--dot)
 @keyframes flash-text { 0%, 30% { background: var(--butter); } 100% { background: var(--accent-soft); } }
 .sec.flash h3 { animation: flash-text 1.4s ease-out; }
 
-/* 재료 묶음 이름(소스 · 채소 등) */
-.grp + .grp { margin-top: 12px; }
-.grp-label { display: flex; align-items: center; gap: 6px; margin: 0 0 4px; color: var(--ink); font-family: var(--display); font-size: var(--fs-s); }
-.grp-label::before { content: ""; width: 8px; height: 8px; border: 1.5px solid var(--ink); border-radius: 50%; background: var(--butter); }
-@media (prefers-color-scheme: dark) { .grp-label { color: var(--muted); } }
+/* 재료 · 과정 묶음(소스 · 채소 등)은 파스텔 상자에 나눠 담는다 */
+.grp { padding: 10px 14px 12px; border-radius: 14px; background: var(--tint); }
+.grp:nth-of-type(4n+1) { --tint: var(--pink); }
+.grp:nth-of-type(4n+2) { --tint: var(--butter); }
+.grp:nth-of-type(4n+3) { --tint: var(--mint); }
+.grp:nth-of-type(4n) { --tint: var(--sky); }
+.grp + .grp { margin-top: 10px; }
+.grp-label { margin: 0 0 4px; color: var(--text); font-family: var(--display); font-size: var(--fs-m); }
+.grp .steps li::before { background: var(--card); }
 
 /* 목록 */
 .items li::before { width: 6px; height: 6px; top: 0.7em; }
