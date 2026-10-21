@@ -15,6 +15,8 @@
   - `category`: `meal`(식사) · `dessert`(디저트) · `drink`(음료)
   - `title`: 카드 제목
   - `sections`: `{ "heading": "재료", "items": ["..."] }`. 순서가 있는 과정은 `"ordered": true`
+    - 묶음으로 나눌 때는 `items` 대신 `"groups": [{ "label": "소스", "items": ["..."] }]`
+    - 한 줄에 하나씩 `"설탕 40g"`. 덧붙임은 `"소금 0.4g — 두 꼬집"`처럼 ` — ` 뒤에
   - `notes`: 메모 줄 목록(없으면 `[]`)
   - `subs`(있을 때만): 레시피 카드 맨 아래 ＋ 줄로 접어 두는 참고 내용. `{ "title": "묵나물 가이드", "sections": [...] }`
 

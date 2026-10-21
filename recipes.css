@@ -1,0 +1,119 @@
+/* 레시피 페이지만 쓰는 귀여운 꾸밈. app.css 위에 덮어쓴다. 고치면 index.html의 recipes.css?v= 숫자를 하나 올린다. */
+:root {
+  --bg: #FBF5EA;
+  --dot: #EEE0C6;
+  --card: #FFFDF9;
+  --line: #E6DCCB;
+  --line-strong: #D3C5AE;
+  --text: #33241B;
+  --muted: #7D6B5D;
+  --ink: #4A3628;
+  --accent: #E0533F;
+  --accent-dark: #B63C2B;
+  --accent-soft: #FDE4DC;
+  --pink: #FDE3E3;
+  --butter: #FDF0C4;
+  --mint: #DCF1E6;
+  --sky: #E1ECFA;
+  --open-bg: #F7F0E4;
+  --badge-bg: #F7F0E4;
+  --guide: #D3C5AE;
+  --shadow: 2px 2px 0 var(--ink);
+  --display: "Jua", "Pretendard Variable", Pretendard, "Apple SD Gothic Neo", sans-serif;
+  --radius: 18px;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1D1817;
+    --dot: #2C2523;
+    --card: #272120;
+    --line: #3A312E;
+    --line-strong: #4D423D;
+    --text: #F5E9DA;
+    --muted: #BDA998;
+    --ink: #7A5A4C;
+    --accent: #FF8A74;
+    --accent-dark: #FFAB99;
+    --accent-soft: #4A2A24;
+    --pink: #43292E;
+    --butter: #40371F;
+    --mint: #213A30;
+    --sky: #232F40;
+    --open-bg: #2F2826;
+    --badge-bg: #2F2826;
+    --guide: #4D423D;
+  }
+}
+
+body { background-color: var(--bg); background-image: radial-gradient(var(--dot) 1.3px, transparent 1.3px); background-size: 22px 22px; }
+
+/* 맨 위 이름: 형광펜 밑줄 + 점선 장식 */
+.brand h1 { font-family: var(--display); font-weight: 400; letter-spacing: 0.02em; }
+.brand h1::before, .brand h1::after { width: 26px; height: 0; border-top: 0; border-bottom: 3px dotted var(--line-strong); }
+.brand .hl { padding: 0 3px; background: linear-gradient(transparent 58%, color-mix(in srgb, var(--accent) 30%, transparent) 58%); }
+.brand-icon { width: 26px; height: 26px; }
+
+/* 검색창 */
+.search input { border: 1.5px solid var(--line-strong); border-radius: 999px; }
+.search input:focus { border-color: var(--ink); outline: none; }
+
+/* 레시피 카드: 잉크 테두리 + 밀린 그림자 + 파스텔 머리 */
+.card { border: 1.5px solid var(--ink); border-radius: var(--radius); box-shadow: var(--shadow); }
+.cards > .card-fold { --tint: var(--pink); }
+.cards > .card-fold:nth-child(4n+2) { --tint: var(--butter); }
+.cards > .card-fold:nth-child(4n+3) { --tint: var(--mint); }
+.cards > .card-fold:nth-child(4n) { --tint: var(--sky); }
+.card-fold > summary, .card-fold[open] > summary { min-height: 58px; background: var(--tint); box-shadow: none; }
+.card-fold[open] { box-shadow: var(--shadow); }
+.card-fold[open] > summary { border-bottom: 1.5px solid var(--ink); }
+.card-fold > summary .fold-name { font-family: var(--display); font-size: var(--fs-l); font-weight: 400; line-height: 1.4; }
+
+/* 동그란 ＋ 단추: 펼치면 ×로 돈다 */
+.card-fold > summary > .pm { flex: 0 0 28px; width: 28px; height: 28px; border: 1.5px solid var(--ink); border-radius: 50%; background: var(--card); color: var(--ink); transition: transform .2s ease; }
+.card-fold > summary > .pm::before, .card-fold > summary > .pm::after { left: 50%; top: 50%; width: 12px; margin: -1px 0 0 -6px; }
+.card-fold[open] > summary > .pm { transform: rotate(45deg); }
+.card-fold[open] > summary > .pm::after { display: block; }
+
+/* 구간 제목은 알약 이름표 */
+.sec h3 { display: inline-block; margin: 0 0 8px; padding: 1px 12px; border-radius: 999px; background: var(--accent-soft); color: var(--accent-dark); font-family: var(--display); font-size: var(--fs-m); font-weight: 400; }
+@keyframes flash-text { 0%, 30% { background: var(--butter); } 100% { background: var(--accent-soft); } }
+.sec.flash h3 { animation: flash-text 1.4s ease-out; }
+
+/* 재료 묶음 이름(소스 · 채소 등) */
+.grp + .grp { margin-top: 12px; }
+.grp-label { display: flex; align-items: center; gap: 6px; margin: 0 0 4px; color: var(--ink); font-family: var(--display); font-size: var(--fs-s); }
+.grp-label::before { content: ""; width: 8px; height: 8px; border: 1.5px solid var(--ink); border-radius: 50%; background: var(--butter); }
+@media (prefers-color-scheme: dark) { .grp-label { color: var(--muted); } }
+
+/* 목록 */
+.items li::before { width: 6px; height: 6px; top: 0.7em; }
+.items.cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 12px; row-gap: 6px; }
+.items.cols li + li { margin-top: 0; }
+.items.cols li.wide { grid-column: 1 / -1; }
+.note { display: block; color: var(--muted); font-size: var(--fs-s); line-height: 1.5; }
+.lbl { font-weight: 700; }
+.steps li { padding-left: 34px; }
+.steps li::before { content: counter(step); top: 1px; display: grid; place-items: center; width: 24px; height: 24px; border: 1.5px solid var(--ink); border-radius: 50%; background: var(--butter); color: var(--text); font-size: var(--fs-s); font-weight: 700; line-height: 1; }
+.steps li + li { margin-top: 10px; }
+
+/* 카드 안 접힌 참고(묵나물 가이드 등) */
+.card-fold .inner { border-top: 1.5px dashed var(--line-strong); }
+.card-fold .inner > summary .fold-name { font-family: var(--display); font-weight: 400; }
+.card-fold .inner[open] > summary { background: var(--open-bg); box-shadow: none; border-bottom: 1.5px dashed var(--line-strong); }
+.card-fold .guide { border-left: 2px dashed var(--line-strong); }
+
+/* 아래 탭: 고른 탭은 버터색 알약 */
+.tab-bar { border-top: 1.5px solid var(--ink); }
+.tabs { gap: 6px; padding: 6px 0; }
+.tab { min-height: 54px; border: 1.5px solid transparent; border-radius: 16px; font-family: var(--display); font-weight: 400; }
+.tab[aria-selected="true"] { border-color: var(--ink); background: var(--butter); color: var(--text); box-shadow: var(--shadow); }
+.tab[aria-selected="true"] svg { color: var(--accent); }
+.tab[aria-selected="true"] .f { fill: var(--pink); }
+.tab:active { transform: translate(1px, 1px); }
+
+/* 검색 결과 */
+.group-title { font-family: var(--display); font-weight: 400; }
+
+@media (min-width: 700px) {
+  .tab-bar { left: 50%; right: auto; bottom: calc(12px + env(safe-area-inset-bottom)); width: min(calc(100% - 32px), 420px); padding: 0 6px; transform: translateX(-50%); border: 1.5px solid var(--ink); border-radius: 20px; box-shadow: 3px 3px 0 var(--ink); }
+}
