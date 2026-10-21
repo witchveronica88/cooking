@@ -16,6 +16,7 @@
   - `title`: 카드 제목
   - `sections`: `{ "heading": "재료", "items": ["..."] }`. 순서가 있는 과정은 `"ordered": true`
   - `notes`: 메모 줄 목록(없으면 `[]`)
+  - `subs`(있을 때만): 레시피 카드 맨 아래 ＋ 줄로 접어 두는 참고 내용. `{ "title": "묵나물 가이드", "sections": [...] }`
 
 ### `peaches-data.js` (복숭아)
 

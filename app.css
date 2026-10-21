@@ -136,10 +136,11 @@ a { color: inherit; }
 .guide { padding-left: 14px; border-left: 2px solid var(--guide); }
 
 /* 단일 카드: 머리를 누르면 내용 전체가 한 번에 열린다 */
-.card-fold > summary { min-height: 60px; padding: 14px var(--pad); }
-.card-fold > summary .fold-name { font-size: var(--fs-l); line-height: 1.4; }
+.card-fold > summary { min-height: 52px; padding: 12px var(--pad); }
 .card-fold > .fold-body { padding: 16px var(--pad) 20px; }
 .sec + .sec { margin-top: 24px; }
+.guide > .sec + .sec { margin-top: 16px; }
+.card-fold > .fold-body > .inner-list { margin: 24px calc(-1 * var(--pad)) -20px; }
 .sec h3 { margin: 0 0 6px; color: var(--accent); font-size: var(--fs-m); font-weight: 700; line-height: 1.5; }
 .sec.flash h3 { animation: flash-text 1.4s ease-out; }
 @keyframes flash-text { 0%, 30% { color: var(--text); } 100% { color: var(--accent); } }
