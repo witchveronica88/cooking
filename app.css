@@ -12,8 +12,7 @@
   --open-bg: #F4ECE3;
   --badge-bg: #EFE7DD;
   --guide: #D9CFC3;
-  /* 글자 크기는 네 단계만 쓴다 */
-  --fs-xl: 24px; /* 큰 숫자(날짜 · 총액 · 통계) */
+  /* 글자 크기는 세 단계만 쓴다 (24px 같은 큰 글씨는 쓰지 않는다) */
   --fs-l: 18px;  /* 앱 이름, 카드 제목, 묶음 제목 */
   --fs-m: 16px;  /* 본문, 줄 이름, 입력창 */
   --fs-s: 14px;  /* 보조 글(설명, 요약, 날짜, 탭) */
@@ -137,13 +136,13 @@ a { color: inherit; }
 .guide { padding-left: 14px; border-left: 2px solid var(--guide); }
 
 /* 단일 카드: 머리를 누르면 내용 전체가 한 번에 열린다 */
-.card-fold > summary { min-height: 68px; padding: 16px var(--pad); }
-.card-fold > summary .fold-name { font-size: var(--fs-xl); line-height: 1.35; }
+.card-fold > summary { min-height: 60px; padding: 14px var(--pad); }
+.card-fold > summary .fold-name { font-size: var(--fs-l); line-height: 1.4; }
 .card-fold > .fold-body { padding: 16px var(--pad) 20px; }
 .sec + .sec { margin-top: 24px; }
-.sec h3 { margin: 0 0 8px; font-size: var(--fs-l); font-weight: 700; line-height: 1.4; }
+.sec h3 { margin: 0 0 6px; color: var(--accent); font-size: var(--fs-m); font-weight: 700; line-height: 1.5; }
 .sec.flash h3 { animation: flash-text 1.4s ease-out; }
-@keyframes flash-text { 0%, 30% { color: var(--accent); } 100% { color: var(--text); } }
+@keyframes flash-text { 0%, 30% { color: var(--text); } 100% { color: var(--accent); } }
 .flash > summary { animation: flash 1.4s ease-out; }
 @keyframes flash { 0%, 30% { background: var(--accent-soft); } 100% { background: var(--open-bg); } }
 
